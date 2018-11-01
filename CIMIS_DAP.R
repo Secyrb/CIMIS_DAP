@@ -1,5 +1,7 @@
 # Test Variables
-tv <- ("1999-01-01, 2000-01-01,78,M,FALSE,FALSE,94611544-6c5c-40eb-ae87-83c12b6208d3, areaData$Julian, areaData$DayAirTmpAvg.Value, JulianDay, DailyTmp, 47, 29.44, 18.33, 12.778, -6.1, 47.2")
+tv <- ("1999-01-01, 2000-01-01,78,M,FALSE,FALSE,94611544-6c5c-40eb-ae87-83c12b6208d3, weatherData$Julian, weatherData$DayAirTmpAvg.Value, JulianDay, DailyTmp, 47, 29.44, 18.33, 12.778, -6.1, 47.2")
+
+
 
 #################################################################################
 # The following function called "CIMIS_download_analyze_plot" (CIMIS_DAP)       #
@@ -17,36 +19,36 @@ tv <- ("1999-01-01, 2000-01-01,78,M,FALSE,FALSE,94611544-6c5c-40eb-ae87-83c12b62
 #     y_data = = (df$column), extremeCropHigh = (#), dayLimitHigh = (#),        #
 #     dayLimitLow = (#), nightLimitLow = (#), cropType, recordLow, recordHigh"  #
 #################################################################################
-CIMI_appKey <- function(appKey)
+# Load required packages
+library(Rcimis)
+library(ggplot2)
+#################################################################################
+
+# Main Function
+CIMIS_DAP <- function(
+                      x_data,
+                      y_data, 
+                      x_data_title,
+                      y_data_title,
+                      extremeCropHigh,
+                      dayLimitHigh,
+                      dayLimitLow,
+                      nightLimitLow,
+                      recordLow,
+                      recordHigh)
 {
-  appKey <- readLine("What is your CIMIS API key?")
-  appKey <- as.numeric(appKey)
-  print(appkey)
-}
-CIMIS_DAP <- function(startDate, endDate, targets, unitOfMeasure, prioritizeSCS, includeQC, appKey, x_data, y_data, x_data_title, y_data_title, extremeCropHigh, dayLimitHigh, dayLimitLow, nightLimitLow, cropType, recordLow, recordHigh)
-{
-  # Load required packages
-  library(Rcimis)
-  library(ggplot2)
-  
-  print(startDate, endDate, targets, unitOfMeasure, prioritizeSCS, includeQC, appKey, x_data, y_data, x_data_title, y_data_title, extremeCropHigh, dayLimitHigh, dayLimitLow, nightLimitLow, cropType, recordLow, recordHigh)
-  
+
   
   # Clears Variables
-  areaDaily <- NULL
-  areaData <- NULL
   
-  # User Sets Variables
-  areaData <- data.frame()
+# User Sets Variables
+  weatherData <- tmp
   areaTitle <- NULL
   x_data <- NULL
   y_data <- NULL
-  apiCIMIS <- c("94611544-6c5c-40eb-ae87-83c12b6208d3")
   
   #unitOfMeasure = c("M")
-  
-  if(is.null(unitOfMeasure))
-    unitOfMeasure <- c("M")
+
   
   # Static Crop Variables
   # Temperature Variables
@@ -59,14 +61,12 @@ CIMIS_DAP <- function(startDate, endDate, targets, unitOfMeasure, prioritizeSCS,
   areaRecordTemps <- c("-6.1, 47.2")
   
   # Import Data from CIMIS
-  areaData <- Rcimis::CIMISweather(start, end, targets, unitOfMeasure, prioritizeSCS, includeQC, apiCIMIS)
-  print(areaData)
   
   # Styling Code
   colors <- c("blue", "green", "red")
   
   # Plot Code
-  areaDaily <- ggplot(areaData,aes(x=factor(x_data), y=y_data)) +
+  areaDaily <- ggplot(weatherData,aes(x=factor(x_data), y=y_data)) +
     geom_point(aes(color = cut(y_data, cropType))) +
     scale_color_manual(name = "Temperature", values = colors, labels = c("Low", "Idea", "High")) +
     scale_y_continuous(limits=areaRecordTemps) +
@@ -80,7 +80,7 @@ CIMIS_DAP <- function(startDate, endDate, targets, unitOfMeasure, prioritizeSCS,
     xlab(x_data_title) +
     ylab (y_data_title+"(ºC)")
   
-  areaData$group <- as.numeric(cut(x_data, 4))
+  weatherData$group <- as.numeric(cut(x_data, 4))
   
   # Display Plot
   print(areaDaily)}
