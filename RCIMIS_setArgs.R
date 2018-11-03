@@ -1,5 +1,5 @@
 library(RCurl)
-source("keys.R")
+library(Rcimis)
 
 
 RCIMIS_setArgs = function(start, end,
@@ -101,17 +101,21 @@ RCIMIS_setArgs = function(start, end,
   args = checkParams(.args = args)
   args$appKey = appKey
   
+  print("test 1")
   if("dataItems" %in% names(args))
+  print("test 2")
     args$dataItems = paste(matchDataItems(args$dataItems), collapse = ",")
-  
+  print("test 3")
   
   doc = getForm(uri = url, 
                 .params = args,
                 .opts = .opts)
+  print("test 5")
   if(!parseJSON)
     doc
   else
     fromJSON(doc, flatten = TRUE)$Data$Providers$Records[[1]]
+  print("test 6")
   print("Printing DOC TEST")
   print(doc)
 }

@@ -1,5 +1,5 @@
 # Test Variables
-tv <- ("1999-01-01, 2000-01-01,78,M,FALSE,FALSE,94611544-6c5c-40eb-ae87-83c12b6208d3, weatherData$Julian, weatherData$DayAirTmpAvg.Value, JulianDay, DailyTmp, 47, 29.44, 18.33, 12.778, -6.1, 47.2")
+tv <- ("1999-01-01, 2000-01-01,78,M,FALSE,FALSE,####, weatherData$Julian, weatherData$DayAirTmpAvg.Value, JulianDay, DailyTmp, 47, 29.44, 18.33, 12.778, -6.1, 47.2")
 
 
 
