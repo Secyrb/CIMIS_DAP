@@ -1,6 +1,6 @@
 ## Key is stored separate and not shared
 
-getCIMIS = function(start, end,
+getCIMIS2 = function(start, end,
                     targets = NA,
                     unitOfMeasure = NA,
                     dataItems = NA,
@@ -13,7 +13,7 @@ getCIMIS = function(start, end,
 {
   if(format != "json") 
     .opts[["httpheader"]] = c(Accept = "application/xml")
-  
+  print(dataItems,"6")
   # Now combine all of the API parameters (except appKey) and validate
   # their names (and soon their values). We do this on the client side
   # to avoid/reduce errors on the server side.
@@ -21,9 +21,10 @@ getCIMIS = function(start, end,
   args = list(startDate = start, endDate = end, unitOfMeasure = unitOfMeasure,
               dataItems = matchDataItems(dataItems),
               prioritizeSCS = prioritizeSCS, targets = targets)
-  
+  print(dataItems,"1")
   args = checkParams(.args = args)
   args$appKey = appKey
+  print(dataItems,"2")
   
   if("dataItems" %in% names(args))
     args$dataItems = paste(matchDataItems(args$dataItems), collapse = ",")
@@ -66,7 +67,7 @@ getCIMIS = function(start, end,
 ##' if(!is.null(getOption("Rcimis_key")))
 ##'     ans = CIMISweather(startDate = "1987-07-17", endDate = Sys.Date(), targets = 6)
 ##'
-CIMISweather = function(startDate, endDate, targets,
+CIMISweather2 = function(startDate, endDate, targets,
                         unitOfMeasure = 'M',
                         dataItems = character(),
                         prioritizeSCS = NA,
@@ -75,7 +76,8 @@ CIMISweather = function(startDate, endDate, targets,
                         appKey = getOption("Rcimis_key", stop("You need a key.")),
                         .opts = list())
 {
-  tmp = getCIMIS(appKey = appKey,
+  print(dataItems,"3")
+  tmp = getCIMIS2(appKey = appKey,
                  start = startDate,
                  end = endDate,
                  unitOfMeasure = unitOfMeasure,
@@ -88,6 +90,8 @@ CIMISweather = function(startDate, endDate, targets,
     idx = grepl('[.]Qc$|[.]Unit$', colnames(tmp))
     tmp = tmp[,!idx]
   }
+  print(dataItems,"4")
   
   return(tmp)
+  print(dataItems,"5")
 }

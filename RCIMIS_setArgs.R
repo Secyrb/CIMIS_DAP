@@ -7,58 +7,45 @@ RCIMIS_setArgs = function(start, end,
                           unitOfMeasure = NA,
                           dataItems = NA,
                           prioritizeSCS = NA,
-                          appKey = Rcimis_key,                     
+                          appKey = getOption("Rcimis_key", stop("You need a key.")),                     
                           .opts = list(),
                           format = "json",
                           url = "http://et.water.ca.gov/api/data",
                           parseJSON = (format == "json"))
 {
   start <- readline(prompt = "Please enter your start date YYYY-MM-DD: ")
-  start <- as.Date.character(start)
+  start <- start
     
   end <- readline(prompt = "Please enter your end date YYYY-MM-DD: ")
-  end <- as.Date.character(end)
+  end <- end
   
   targets <- readline(prompt = "Please enter CIMIS station #: ")
-  targets <- as.numeric(targets)
+  targets <- targets
     while(is.na(targets))
     {
       targets <- readline(prompt = "Please enter CIMIS station #: ")
-      targets <- as.numeric(targets)
+      targets <- targets
     }
   
   unitOfMeasure <- readline(prompt = "Please enter desired unit of measure 'M' for metric units, 'E' for empirical: ")
-  unitOfMeasure <- as.character(unitOfMeasure)
-    while(is.na(unitOfMeasure))
-    {
-      unitOfMeasure <- readline(prompt = "Please enter desired unit of measure 'M' for metric units, 'E' for empirical: ")
-      unitOfMeasure <- as.character(unitOfMeasure)
-    }
+  unitOfMeasure <- unitOfMeasure
 
   dataItems  <- readline(prompt = "List desired returned data types, if left blank will return all data: ")
-  dataItems  <- as.logical(dataItems)
+  dataItems  <- dataItems
+  print(dataItems)
   
-  prioritizeSCS <- readline(prompt = "Should results from Spatial CIMIS (interpolated) be prioritized? (TRUE|FALSE): ")
-  prioritizeSCS <- as.logical(prioritizeSCS)
-    while(is.na(prioritizeSCS))
-    {prioritizeSCS <- FALSE}
+  prioritizeSCS <- readline(prompt = "Should results from Spatial CIMIS (interpolated) be prioritized? (Y|N): ")
+  prioritizeSCS <- "N"
   
-
   includeQC  <- readline(prompt = "Should data with quality control flags be included in results? (TRUE|FALSE): ")
-  includeQC  <- as.logical(includeQC)
-    while(is.na(includeQC))
-    {includeQC <- FALSE}
+  includeQC  <- includeQC
   
   .opts  <- readline(prompt = "Please provide optional arguments: ")
   .opts  <- .opts
-
-
-  
   
   argsList = list(startDate = start, endDate = end, unitOfMeasure = unitOfMeasure,dataItems = dataItems,prioritizeSCS = prioritizeSCS, targets = targets)
-
-  
-  
+   
+  print(argsList$dataItems)
  # args = list(startDate = start, endDate = end, unitOfMeasure = unitOfMeasure,
   #            dataItems = matchDataItems(dataItems),
    #           prioritizeSCS = prioritizeSCS, targets = targets)
